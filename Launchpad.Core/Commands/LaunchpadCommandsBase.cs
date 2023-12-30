@@ -9,7 +9,7 @@ namespace Launchpad.Core.Commands
 
         protected LaunchpadCommandsBase()
         {
-            _command = new byte[3];
+            _command = new byte[4];
         }
         protected LaunchpadCommandsBase(MessageType messageType): this()
         {
@@ -33,6 +33,11 @@ namespace Launchpad.Core.Commands
         public byte[] ToByteArray()
         {
             return _command;
+        }
+
+        public int ToInt()
+        {
+            return _command[0] << 16 | _command[1] << 8 | _command[2];
         }
     }
 }

@@ -10,6 +10,7 @@ namespace Launchpad.Midi.Native
     internal static class Methods
     {
         internal const int MMSYSERR_NOERROR = 0;
+        internal const int MMSYSERR_INVALHANDLE = 5;
         internal const int CALLBACK_FUNCTION = 0x00030000;
 
         internal delegate void MidiInProc(
@@ -44,6 +45,20 @@ namespace Launchpad.Midi.Native
             int dwFlags);
 
         [DllImport("winmm.dll")]
+        internal static extern int midiOutClose(
+            IntPtr hmo);
+
+        [DllImport("winmm.dll")]
+        internal static extern int midiOutOpen(
+            out IntPtr phmo,
+            int uDeviceID,
+            MidiInProc dwCallback,
+            IntPtr dwInstance,
+            int fdwOpen);
+
+
+
+        [DllImport("winmm.dll")]
         internal static extern int midiInStart(
             IntPtr hMidiIn);
 
@@ -51,21 +66,9 @@ namespace Launchpad.Midi.Native
         internal static extern int midiInStop(
             IntPtr hMidiIn);
 
-        #region winmm.dll:midiInMessage
-        /*
-            MMRESULT midiInMessage(
-                
-                
-                DWORD_PTR dw1,
-                DWORD_PTR dw2
-            );
-        */
-        #endregion
         [DllImport("winmm.dll")]
-        internal static extern int midiInMessage(
-            IntPtr hMidiIn,                 //  HMIDIIN   hmi,
-            uint uMsg,                      //  UINT      uMsg,
-                                            //  DWORD_PTR dw1,
-                                            //  DWORD_PTR dw2
+        internal static extern int midiOutShortMsg(
+            IntPtr hMidiOut,
+            int dwMsg);
     }
 }

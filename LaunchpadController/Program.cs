@@ -1,6 +1,7 @@
 ﻿using Launchpad.Core.Commands;
 using Launchpad.Core.Enums;
 using Launchpad.Midi;
+using Launchpad.Midi.Native;
 
 internal class Program
 {
@@ -49,12 +50,37 @@ internal class Program
         Console.WriteLine("Velocity:" + midiOutput[2]);
         */
 
-        Console.WriteLine($"Input devices: {InputPort.InputCount}");
 
-        for (int i = 0; i < InputPort.InputCount; i++)
+        var midiIn = new InputPort();
+        var midiInCaps = new Structs.MIDIINCAPS();
+        var midiNumber = 0;
+        var writeCommand = LaunchpadWriteCommand
+                .TurnOn(16 * 1 + 1)
+                .Green(LEDBrightness.Full)
+                .Red(LEDBrightness.Full)
+                .ToByteArray();
+
+        for (;midiNumber < InputPort.InputCount; midiNumber++)
         {
-            Console.WriteLine($"Device {i}:{InputPort.GetDeviceInfo(i)}");
+            InputPort.GetDeviceInfo(midiNumber, out midiInCaps);
+            if (midiInCaps.szPname.Contains("Launchpad"))
+            {
+                break;
+            }
         }
+
+        Console.WriteLine($"Device {midiNumber}:{midiInCaps.ToString()}");
+
+        var openReturnCode = midiIn.Open(midiNumber);
+        var startReturnCode = midiIn.Start();
+
+        Console.WriteLine($"OpenReturnCode: {openReturnCode}");
+        Console.WriteLine($"StartReturnCode: {startReturnCode}");
+        
+
+        Console.ReadLine();
+
+        midiIn.Close();
     }
 
 }

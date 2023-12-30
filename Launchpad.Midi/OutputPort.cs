@@ -2,20 +2,22 @@
 using Launchpad.Midi.Native;
 namespace Launchpad.Midi
 {
-    public class InputPort
+    public class OutputPort
     {
-        private Native.Methods.MidiInProc midiInProc;
+        //TODO: Split MidiInProc into MidiInProc and MidiOutProc
+
+        private Native.Methods.MidiInProc midiOutProc;
         private IntPtr handle;
 
-        public InputPort()
+        public OutputPort()
         {
-            midiInProc = new Native.Methods.MidiInProc(MidiProc);
+            midiOutProc = new Native.Methods.MidiInProc(MidiProc);
             handle = IntPtr.Zero;
         }
 
-        public static int InputCount
+        public static int OutputCount
         {
-            get { return Native.Methods.midiInGetNumDevs(); }
+            get { return Native.Methods.midiInGetOutDevs(); }
         }
 
         public static void GetDeviceInfo(int id, out Structs.MIDIINCAPS midiInCaps)
@@ -26,7 +28,7 @@ namespace Launchpad.Midi
 
         public bool Close()
         {
-            bool result = Native.Methods.midiInClose(handle)
+            bool result = Native.Methods.midiOutClose(handle)
                 == Native.Methods.MMSYSERR_NOERROR;
             handle = IntPtr.Zero;
             return result;
@@ -34,25 +36,13 @@ namespace Launchpad.Midi
 
         public bool Open(int id)
         {
-            return Native.Methods.midiInOpen(
+            return Native.Methods.midiOutOpen(
                 out handle,
                 id,
-                midiInProc,
+                midiOutProc,
                 IntPtr.Zero,
                 Native.Methods.CALLBACK_FUNCTION)
                     == Native.Methods.MMSYSERR_NOERROR;
-        }
-
-        public bool Start()
-        {
-            return Native.Methods.midiInStart(handle)
-                == Native.Methods.MMSYSERR_NOERROR;
-        }
-
-        public bool Stop()
-        {
-            return Native.Methods.midiInStop(handle)
-                == Native.Methods.MMSYSERR_NOERROR;
         }
 
         public int OutShortMsg(int dwMsg)
@@ -66,7 +56,7 @@ namespace Launchpad.Midi
             int dwParam1,
             int dwParam2)
         {
-            Console.WriteLine($"hMidiIn: {hMidiIn}, wMsg: {wMsg}, dwInstance: {dwInstance}, dwParam1: {dwParam1}, dwParam2: {dwParam2}");
+            // Receive messages here
         }
     }
 }

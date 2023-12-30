@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Launchpad.Midi.Native
 {
-    internal class Structs
+    public class Structs
     {
         /*
             Constant windows::Win32::Media::MAXPNAMELEN
@@ -24,7 +24,7 @@ namespace Launchpad.Midi.Native
               DWORD   dwSupport;
             } MIDIINCAPS, *PMIDIINCAPS, *NPMIDIINCAPS, *LPMIDIINCAPS;
         */
-        internal struct MIDIINCAPS
+        public struct MIDIINCAPS
         {
             public Int16 wMid;
             public Int16 wPid;
