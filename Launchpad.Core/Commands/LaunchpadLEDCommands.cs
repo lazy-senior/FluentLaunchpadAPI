@@ -1,4 +1,5 @@
 ﻿using Launchpad.Core.Commands.Interfaces;
+using Launchpad.Core.Enums.LED;
 using Launchpad.Core.Enums;
 using System;
 using System.Collections.Generic;
@@ -10,40 +11,40 @@ namespace Launchpad.Core.Commands
 {
     public class LaunchpadLEDCommands: LaunchpadCommandsBase
     {
-        internal LaunchpadLEDCommands(MessageType messageType, int key): base(messageType, key)
+        internal LaunchpadLEDCommands(InputMessageType messageType, int key): base(messageType, key)
         {
-            _command[2] = (byte)LEDVelocityFlags.Normal;
+            _command[2] = (byte)VelocityFlags.Normal;
         }
 
         #region ILaunchpadLEDCommands
 
-        public LaunchpadLEDCommands Green(LEDBrightness brightness)
+        public LaunchpadLEDCommands Green(Brightness brightness)
         {
-            _command[2] |= (byte)((int)brightness << (int)LEDVelocityBits.Green);
+            _command[2] |= (byte)((int)brightness << (int)Colors.Green);
             return this;
         }
 
-        public LaunchpadLEDCommands Red(LEDBrightness brightness)
+        public LaunchpadLEDCommands Red(Brightness brightness)
         {
-            _command[2] |= (byte)((int)brightness << (int)LEDVelocityBits.Red);
+            _command[2] |= (byte)((int)brightness << (int)Colors.Red);
             return this;
         }
 
         public LaunchpadLEDCommands Clear()
         {
-            _command[2] |= 1 << (int)LEDVelocityBits.Clear;
+            _command[2] |= 1 << (int)Colors.Clear;
             return this;
         }
 
         public LaunchpadLEDCommands Copy()
         {
-            _command[2] |= 1 << (int)LEDVelocityBits.Copy;
+            _command[2] |= 1 << (int)Colors.Copy;
             return this;
         }
 
         public LaunchpadLEDCommands Flash()
         {
-            _command[2] += (int)LEDVelocityFlags.Flash;
+            _command[2] += (int)VelocityFlags.Flash;
             return this;
         }
         #endregion

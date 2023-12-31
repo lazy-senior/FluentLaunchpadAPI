@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Launchpad.Core.Enums
+namespace Launchpad.Core.Enums.LED
 {
-    public enum LEDVelocityBits: int
+    public enum Colors: int
     {
         Green   = 4,
         Clear   = 3,
@@ -14,3 +14,5 @@ namespace Launchpad.Core.Enums
         Red     = 0
     }
 }
+
+

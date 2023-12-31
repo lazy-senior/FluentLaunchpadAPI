@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Launchpad.Core.Enums
 {
-    public enum MessageType
+    public enum InputMessageType
     {
         NoteOff = 0x80,
         NoteOn = 0x90,

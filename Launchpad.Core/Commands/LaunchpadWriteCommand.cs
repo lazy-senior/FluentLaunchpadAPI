@@ -10,14 +10,14 @@ namespace Launchpad.Core.Commands
 {
     public sealed class LaunchpadWriteCommand: LaunchpadCommandsBase
     {
-        private LaunchpadWriteCommand(MessageType messageType) : base(messageType) { }
-        private LaunchpadWriteCommand(MessageType messageType, int key) : base(messageType, key) { }
-        private LaunchpadWriteCommand(MessageType messageType, int key, int velocity) : base(messageType, key, velocity) { }
+        private LaunchpadWriteCommand(InputMessageType messageType) : base(messageType) { }
+        private LaunchpadWriteCommand(InputMessageType messageType, int key) : base(messageType, key) { }
+        private LaunchpadWriteCommand(InputMessageType messageType, int key, int velocity) : base(messageType, key, velocity) { }
 
-        public static LaunchpadLEDCommands TurnOn(int key) => new LaunchpadLEDCommands(MessageType.NoteOn, key);
-        public static ILaunchpadCommandsBase TurnOff(int key) => new LaunchpadWriteCommand(MessageType.NoteOff, key);
-        public static new ILaunchpadCommandsBase Reset() => new LaunchpadWriteCommand(MessageType.ControllerChange);
-        public static ILaunchpadCommandsBase GridMappingMode(GridMappingMode gridMappingMode) => new LaunchpadWriteCommand(MessageType.ControllerChange, 0, (int) gridMappingMode);
+        public static LaunchpadLEDCommands TurnOn(int key) => new LaunchpadLEDCommands(InputMessageType.NoteOn, key);
+        public static ILaunchpadCommandsBase TurnOff(int key) => new LaunchpadWriteCommand(InputMessageType.NoteOff, key);
+        public static new ILaunchpadCommandsBase Reset() => new LaunchpadWriteCommand(InputMessageType.ControllerChange);
+        public static ILaunchpadCommandsBase GridMappingMode(GridMappingMode gridMappingMode) => new LaunchpadWriteCommand(InputMessageType.ControllerChange, 0, (int) gridMappingMode);
 
 
     }
