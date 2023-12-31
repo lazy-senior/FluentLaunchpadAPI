@@ -1,11 +1,19 @@
 ﻿using System.Runtime.InteropServices;
 using Launchpad.Midi.Native;
+using Launchpad.Core.Enums;
+using Launchpad.Core;
+
 namespace Launchpad.Midi
 {
+
     public class InputPort
     {
         private Native.Methods.MidiInProc midiInProc;
         private IntPtr handle;
+
+        public delegate void OnMessageReceivedHandler(object sender, LaunchpadOutputMessageEventArgs e);
+        public event OnMessageReceivedHandler OnMessageReceived;
+
 
         public InputPort()
         {
@@ -66,7 +74,16 @@ namespace Launchpad.Midi
             int dwParam1,
             int dwParam2)
         {
-            Console.WriteLine($"hMidiIn: {hMidiIn}, wMsg: {wMsg}, dwInstance: {dwInstance}, dwParam1: {dwParam1}, dwParam2: {dwParam2}");
+            Console.WriteLine($"hMidiIn: {hMidiIn}, wMsg: {wMsg}, dwInstance: {dwInstance}, dwParam1: {((byte)dwParam1).ToString()}, dwParam2: {dwParam2}");
+
+            if(LaunchpadOutputMessageParser.TryParse(dwParam1, out LaunchpadOutputMessageEventArgs launchpadOutputMessageEventArgs))
+            {
+                OnMessageReceived?.Invoke(this, launchpadOutputMessageEventArgs);
+            }
+            else
+            {
+                Console.WriteLine($"\tCould not parse Midi Message: {dwParam1}");
+            }
         }
     }
 }

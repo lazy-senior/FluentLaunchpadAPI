@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Launchpad.Core\Launchpad.Core.csproj" />
+  </ItemGroup>
+
 </Project>

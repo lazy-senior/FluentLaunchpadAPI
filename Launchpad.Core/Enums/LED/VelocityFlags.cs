@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Launchpad.Core.Enums
+namespace Launchpad.Core.Enums.LED
 {
-    public enum LEDVelocityFlags : int
+    public enum VelocityFlags : int
     {
         Normal = 12,
         Flash = 8,

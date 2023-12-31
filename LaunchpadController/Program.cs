@@ -2,6 +2,7 @@
 using Launchpad.Core.Enums;
 using Launchpad.Midi;
 using Launchpad.Midi.Native;
+using Launchpad.Core.Enums.LED;
 
 internal class Program
 {
@@ -56,8 +57,8 @@ internal class Program
         var midiNumber = 0;
         var writeCommand = LaunchpadWriteCommand
                 .TurnOn(16 * 1 + 1)
-                .Green(LEDBrightness.Full)
-                .Red(LEDBrightness.Full)
+                .Green(Brightness.Full)
+                .Red(Brightness.Full)
                 .ToByteArray();
 
         for (;midiNumber < InputPort.InputCount; midiNumber++)
@@ -71,6 +72,8 @@ internal class Program
 
         Console.WriteLine($"Device {midiNumber}:{midiInCaps.ToString()}");
 
+        midiIn.OnMessageReceived += MidiIn_OnMessageReceived;
+
         var openReturnCode = midiIn.Open(midiNumber);
         var startReturnCode = midiIn.Start();
 
@@ -83,6 +86,10 @@ internal class Program
         midiIn.Close();
     }
 
+    private static void MidiIn_OnMessageReceived(object sender, Launchpad.Core.LaunchpadOutputMessageEventArgs e)
+    {
+        Console.WriteLine(e.MessageType.ToString() + " " + e.Key + " " + e.Velocity.ToString());
+    }
 }
 
 // Generate test class for LaunchpadWriteCommand

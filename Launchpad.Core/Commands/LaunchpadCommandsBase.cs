@@ -11,22 +11,22 @@ namespace Launchpad.Core.Commands
         {
             _command = new byte[4];
         }
-        protected LaunchpadCommandsBase(MessageType messageType): this()
+        protected LaunchpadCommandsBase(InputMessageType messageType): this()
         {
             _command[0] = (byte)messageType;
         }
-        protected LaunchpadCommandsBase(MessageType messageType, int key): this(messageType)
+        protected LaunchpadCommandsBase(InputMessageType messageType, int key): this(messageType)
         {
             _command[1] = (byte)key;
         }
-        protected LaunchpadCommandsBase(MessageType messageType, int key, int velocity): this(messageType, key)
+        protected LaunchpadCommandsBase(InputMessageType messageType, int key, int velocity): this(messageType, key)
         {
             _command[2] = (byte)velocity;
         }
 
         public ILaunchpadCommandsBase Reset()
         {
-            _command = new byte[] { (int)MessageType.ControllerChange, 0, 0 };
+            _command = new byte[] { (int)InputMessageType.ControllerChange, 0, 0 };
             return this;
         }
 

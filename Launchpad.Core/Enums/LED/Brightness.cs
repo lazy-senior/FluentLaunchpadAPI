@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Launchpad.Core.Enums
+namespace Launchpad.Core.Enums.LED
 {
-    public enum LEDBrightness: int
+    public enum Brightness: int
     {
         Off = 0,
         Low = 1,
