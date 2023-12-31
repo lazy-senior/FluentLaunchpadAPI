@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Launchpad.Core.Enums.LED
+namespace Launchpad.Core.Enums
 {
     public enum AutomapButtons : int
     {

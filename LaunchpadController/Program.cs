@@ -3,6 +3,7 @@ using Launchpad.Core.Enums;
 using Launchpad.Midi;
 using Launchpad.Midi.Native;
 using Launchpad.Core.Enums.LED;
+using Launchpad.Core;
 
 internal class Program
 {
@@ -72,7 +73,9 @@ internal class Program
 
         Console.WriteLine($"Device {midiNumber}:{midiInCaps.ToString()}");
 
-        midiIn.OnMessageReceived += MidiIn_OnMessageReceived;
+        midiIn.OnGridButtonPressed += MidiIn_OnGridButtonPressed;
+        midiIn.OnAutomapButtonPressed += MidiIn_OnAutomapButtonPressed;
+
 
         var openReturnCode = midiIn.Open(midiNumber);
         var startReturnCode = midiIn.Start();
@@ -86,9 +89,14 @@ internal class Program
         midiIn.Close();
     }
 
-    private static void MidiIn_OnMessageReceived(object sender, Launchpad.Core.LaunchpadOutputMessageEventArgs e)
+    private static void MidiIn_OnAutomapButtonPressed(object sender, LaunchpadButtonPressedEventArgs<AutomapButtons> e)
     {
-        Console.WriteLine(e.MessageType.ToString() + " " + e.Key + " " + e.Velocity.ToString());
+        Console.WriteLine("OnAutomapButtonPressed:" +  e.MessageType.ToString() + " " + e.Key.ToString() + " " + e.Velocity.ToString());
+    }
+
+    private static void MidiIn_OnGridButtonPressed(object sender, LaunchpadButtonPressedEventArgs<int> e)
+    {
+        Console.WriteLine("OnGridButtonPressed:" + e.MessageType.ToString() + " " + e.Key + " " + e.Velocity.ToString());
     }
 }
 

@@ -11,9 +11,11 @@ namespace Launchpad.Midi
         private Native.Methods.MidiInProc midiInProc;
         private IntPtr handle;
 
-        public delegate void OnMessageReceivedHandler(object sender, LaunchpadOutputMessageEventArgs e);
-        public event OnMessageReceivedHandler OnMessageReceived;
+        public delegate void OnGridButtonPressedHandler(object sender, LaunchpadButtonPressedEventArgs<int> e);
+        public event OnGridButtonPressedHandler OnGridButtonPressed;
 
+        public delegate void OnAutomapButtonPressedHandler(object sender, LaunchpadButtonPressedEventArgs<AutomapButtons> e);
+        public event OnAutomapButtonPressedHandler OnAutomapButtonPressed;
 
         public InputPort()
         {
@@ -76,9 +78,13 @@ namespace Launchpad.Midi
         {
             Console.WriteLine($"hMidiIn: {hMidiIn}, wMsg: {wMsg}, dwInstance: {dwInstance}, dwParam1: {((byte)dwParam1).ToString()}, dwParam2: {dwParam2}");
 
-            if(LaunchpadOutputMessageParser.TryParse(dwParam1, out LaunchpadOutputMessageEventArgs launchpadOutputMessageEventArgs))
+            if(LaunchpadOutputMessageParser.TryParse(dwParam1, out LaunchpadButtonPressedEventArgs<AutomapButtons> launchpadOutputMessageAutomapEventArgs))
             {
-                OnMessageReceived?.Invoke(this, launchpadOutputMessageEventArgs);
+                OnAutomapButtonPressed?.Invoke(this, launchpadOutputMessageAutomapEventArgs);
+            }
+            else if(LaunchpadOutputMessageParser.TryParse(dwParam1, out LaunchpadButtonPressedEventArgs<int> launchpadOutputMessageIntEventArgs))
+            {
+                OnGridButtonPressed?.Invoke(this, launchpadOutputMessageIntEventArgs);
             }
             else
             {

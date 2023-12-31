@@ -12,18 +12,19 @@ namespace Launchpad.Core
 		public const int AUTOMAP_KEY_MIN = 0x68;
 		public const int AUTOMAP_KEY_MAX = 0x6F;
 
-		public static bool TryParse(int bytes, out LaunchpadOutputMessageEventArgs launchpadOutputMessageEventArgs)
+		public static bool TryParse<T>(int bytes, out LaunchpadButtonPressedEventArgs<T> launchpadOutputMessageEventArgs)
 		{
 			launchpadOutputMessageEventArgs = new();
 			byte[] intBytes = BitConverter.GetBytes(bytes);
 			return TryParse(intBytes[0], intBytes[1], intBytes[2], out launchpadOutputMessageEventArgs);
 		}
 
-		public static bool TryParse(int command, int key, int velocity, out LaunchpadOutputMessageEventArgs launchpadOutputMessageEventArgs)
+		public static bool TryParse<T>(int command, int key, int velocity, out LaunchpadButtonPressedEventArgs<T> launchpadOutputMessageEventArgs)
 		{
 			launchpadOutputMessageEventArgs = new();
+            T outputMessageKey = default;
 
-			if (Enum.GetName(typeof(OutputMessageType), command) == null)
+            if (Enum.GetName(typeof(OutputMessageType), command) == null)
 			{
 				Console.WriteLine($"Command not found:{command}");
 				return false;
@@ -31,22 +32,36 @@ namespace Launchpad.Core
 
 			if (Enum.GetName(typeof(OutputMessageVelocity), velocity) == null)
 			{
-                Console.WriteLine($"Velocity not found:{velocity}");
-                return false;
+				Console.WriteLine($"Velocity not found:{velocity}");
+				return false;
 			}
 
 			
 			var outputMessageType = (OutputMessageType)command;
 			var outputMessageVelocity = (OutputMessageVelocity)velocity;
-			var outputMessageKey = key;
-
-			if ((outputMessageType == OutputMessageType.GridButtonPress && (key < GRID_KEY_MIN || key > GRID_KEY_MAX)) ||
-				(outputMessageType == OutputMessageType.AutomapButtonPress && (key < AUTOMAP_KEY_MIN || key > AUTOMAP_KEY_MAX)))
+			
+			if (typeof(T) == typeof(int) && outputMessageType == OutputMessageType.GridButtonPress)
+			{
+                if (key < GRID_KEY_MIN || key > GRID_KEY_MAX) 
+				{
+                    return false;
+				}
+                outputMessageKey = (T)(object)key;
+            }
+            else if(typeof(T) == typeof(AutomapButtons) && outputMessageType == OutputMessageType.AutomapButtonPress)
+			{
+                if (key < AUTOMAP_KEY_MIN || key > AUTOMAP_KEY_MAX)
+				{
+                    return false;
+                }
+                outputMessageKey = (T)(object)(AutomapButtons)key;
+            }
+			else
 			{
 				return false;
 			}
 
-			launchpadOutputMessageEventArgs = new LaunchpadOutputMessageEventArgs()
+			launchpadOutputMessageEventArgs = new LaunchpadButtonPressedEventArgs<T>()
 			{
 				MessageType = outputMessageType,
 				Key = outputMessageKey,
