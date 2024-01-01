@@ -1,16 +1,16 @@
-﻿using Launchpad.Core.Commands;
+﻿using Launchpad.Core;
+using Launchpad.Core.Commands;
 using Launchpad.Core.Enums;
+using Launchpad.Core.Enums.LED;
 using Launchpad.Midi;
 using Launchpad.Midi.Native;
-using Launchpad.Core.Enums.LED;
-using Launchpad.Core;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
         /*
-        
+
         TODO: Move to Test project
 
         var midiOutput = LaunchpadWriteCommand
@@ -22,7 +22,6 @@ internal class Program
         Console.WriteLine("Command:" + midiOutput[0]);
         Console.WriteLine("Key:" + midiOutput[1]);
         Console.WriteLine("Velocity:" + midiOutput[2]);
-
 
         midiOutput = LaunchpadWriteCommand
             .TurnOn(16 * 1 + 1)
@@ -52,7 +51,6 @@ internal class Program
         Console.WriteLine("Velocity:" + midiOutput[2]);
         */
 
-
         var midiIn = new InputPort();
         var midiInCaps = new Structs.MIDIINCAPS();
         var midiNumber = 0;
@@ -62,7 +60,7 @@ internal class Program
                 .Red(Brightness.Full)
                 .ToByteArray();
 
-        for (;midiNumber < InputPort.InputCount; midiNumber++)
+        for (; midiNumber < InputPort.InputCount; midiNumber++)
         {
             InputPort.GetDeviceInfo(midiNumber, out midiInCaps);
             if (midiInCaps.szPname.Contains("Launchpad"))
@@ -76,13 +74,11 @@ internal class Program
         midiIn.OnGridButtonPressed += MidiIn_OnGridButtonPressed;
         midiIn.OnAutomapButtonPressed += MidiIn_OnAutomapButtonPressed;
 
-
         var openReturnCode = midiIn.Open(midiNumber);
         var startReturnCode = midiIn.Start();
 
         Console.WriteLine($"OpenReturnCode: {openReturnCode}");
         Console.WriteLine($"StartReturnCode: {startReturnCode}");
-        
 
         Console.ReadLine();
 
@@ -91,7 +87,7 @@ internal class Program
 
     private static void MidiIn_OnAutomapButtonPressed(object sender, LaunchpadButtonPressedEventArgs<AutomapButtons> e)
     {
-        Console.WriteLine("OnAutomapButtonPressed:" +  e.MessageType.ToString() + " " + e.Key.ToString() + " " + e.Velocity.ToString());
+        Console.WriteLine("OnAutomapButtonPressed:" + e.MessageType.ToString() + " " + e.Key.ToString() + " " + e.Velocity.ToString());
     }
 
     private static void MidiIn_OnGridButtonPressed(object sender, LaunchpadButtonPressedEventArgs<int> e)

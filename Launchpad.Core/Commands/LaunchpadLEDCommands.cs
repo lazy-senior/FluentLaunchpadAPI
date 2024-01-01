@@ -1,17 +1,11 @@
-﻿using Launchpad.Core.Commands.Interfaces;
+﻿using Launchpad.Core.Enums;
 using Launchpad.Core.Enums.LED;
-using Launchpad.Core.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Launchpad.Core.Commands
 {
-    public class LaunchpadLEDCommands: LaunchpadCommandsBase
+    public class LaunchpadLEDCommands : LaunchpadCommandsBase
     {
-        internal LaunchpadLEDCommands(InputMessageType messageType, int key): base(messageType, key)
+        internal LaunchpadLEDCommands(InputMessageType messageType, int key) : base(messageType, key)
         {
             _command[2] = (byte)VelocityFlags.Normal;
         }
@@ -47,6 +41,7 @@ namespace Launchpad.Core.Commands
             _command[2] += (int)VelocityFlags.Flash;
             return this;
         }
-        #endregion
+
+        #endregion ILaunchpadLEDCommands
     }
 }

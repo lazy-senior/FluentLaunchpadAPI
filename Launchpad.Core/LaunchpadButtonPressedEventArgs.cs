@@ -1,9 +1,4 @@
 ﻿using Launchpad.Core.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Launchpad.Core
 {
@@ -12,6 +7,5 @@ namespace Launchpad.Core
         public OutputMessageType MessageType { get; set; }
         public T? Key { get; set; }
         public OutputMessageVelocity Velocity { get; set; }
-
     }
 }

@@ -1,5 +1,6 @@
-﻿using System.Runtime.InteropServices;
-using Launchpad.Midi.Native;
+﻿using Launchpad.Midi.Native;
+using System.Runtime.InteropServices;
+
 namespace Launchpad.Midi
 {
     public class OutputPort
@@ -24,7 +25,7 @@ namespace Launchpad.Midi
         {
             midiInCaps = new Native.Structs.MIDIINCAPS();
             Native.Methods.midiInGetDevCaps(id, ref midiInCaps, Marshal.SizeOf(midiInCaps));
-        }   
+        }
 
         public bool Close()
         {

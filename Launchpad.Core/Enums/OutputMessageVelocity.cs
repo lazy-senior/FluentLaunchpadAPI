@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Launchpad.Core.Enums
+﻿namespace Launchpad.Core.Enums
 {
     public enum OutputMessageVelocity
     {
@@ -12,4 +6,3 @@ namespace Launchpad.Core.Enums
         KeyUp = 0x00
     }
 }
-

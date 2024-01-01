@@ -3,7 +3,7 @@ using Launchpad.Core.Enums;
 
 namespace Launchpad.Core.Commands
 {
-    public class LaunchpadCommandsBase: ILaunchpadCommandsBase
+    public class LaunchpadCommandsBase : ILaunchpadCommandsBase
     {
         protected byte[] _command;
 
@@ -11,15 +11,18 @@ namespace Launchpad.Core.Commands
         {
             _command = new byte[4];
         }
-        protected LaunchpadCommandsBase(InputMessageType messageType): this()
+
+        protected LaunchpadCommandsBase(InputMessageType messageType) : this()
         {
             _command[0] = (byte)messageType;
         }
-        protected LaunchpadCommandsBase(InputMessageType messageType, int key): this(messageType)
+
+        protected LaunchpadCommandsBase(InputMessageType messageType, int key) : this(messageType)
         {
             _command[1] = (byte)key;
         }
-        protected LaunchpadCommandsBase(InputMessageType messageType, int key, int velocity): this(messageType, key)
+
+        protected LaunchpadCommandsBase(InputMessageType messageType, int key, int velocity) : this(messageType, key)
         {
             _command[2] = (byte)velocity;
         }
