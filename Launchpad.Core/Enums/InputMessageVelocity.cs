@@ -1,6 +1,6 @@
 ﻿namespace Launchpad.Core.Enums
 {
-    public enum OutputMessageVelocity
+    public enum InputMessageVelocity
     {
         KeyDown = 0x7F,
         KeyUp = 0x00

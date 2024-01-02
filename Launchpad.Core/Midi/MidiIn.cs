@@ -1,12 +1,19 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Launchpad.Midi.Native
+namespace Launchpad.Core.Midi
 {
-    internal static class Methods
+    internal static partial class MidiIn
     {
-        internal const int MMSYSERR_NOERROR = 0;
-        internal const int MMSYSERR_INVALHANDLE = 5;
-        internal const int CALLBACK_FUNCTION = 0x00030000;
+
+        /*
+            void CALLBACK MidiInProc(
+               HMIDIIN   hMidiIn,
+               UINT      wMsg,
+               DWORD_PTR dwInstance,
+               DWORD_PTR dwParam1,
+               DWORD_PTR dwParam2
+            );
+        */
 
         internal delegate void MidiInProc(
             IntPtr hMidiIn,
@@ -23,7 +30,7 @@ namespace Launchpad.Midi.Native
 
         [DllImport("winmm.dll")]
         internal static extern int midiInGetDevCaps(
-            int uDeviceID,                  //  UINT         uDeviceID,
+            int uDeviceID,                  //  UINT         uDeviceID,s
             ref Structs.MIDIINCAPS pmic,    //  LPMIDIINCAPS pmic,
             int cbmic);                     //  UINT         cbmic
 
@@ -40,18 +47,6 @@ namespace Launchpad.Midi.Native
             int dwFlags);
 
         [DllImport("winmm.dll")]
-        internal static extern int midiOutClose(
-            IntPtr hmo);
-
-        [DllImport("winmm.dll")]
-        internal static extern int midiOutOpen(
-            out IntPtr phmo,
-            int uDeviceID,
-            MidiInProc dwCallback,
-            IntPtr dwInstance,
-            int fdwOpen);
-
-        [DllImport("winmm.dll")]
         internal static extern int midiInStart(
             IntPtr hMidiIn);
 
@@ -59,9 +54,5 @@ namespace Launchpad.Midi.Native
         internal static extern int midiInStop(
             IntPtr hMidiIn);
 
-        [DllImport("winmm.dll")]
-        internal static extern int midiOutShortMsg(
-            IntPtr hMidiOut,
-            int dwMsg);
     }
 }

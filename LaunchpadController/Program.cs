@@ -1,9 +1,8 @@
 ﻿using Launchpad.Core;
-using Launchpad.Core.Commands;
 using Launchpad.Core.Enums;
 using Launchpad.Core.Enums.LED;
-using Launchpad.Midi;
-using Launchpad.Midi.Native;
+using Launchpad.Core.Fluent.Commands;
+using Launchpad.Core.Midi;
 
 internal class Program
 {
@@ -51,48 +50,38 @@ internal class Program
         Console.WriteLine("Velocity:" + midiOutput[2]);
         */
 
-        var midiIn = new InputPort();
-        var midiInCaps = new Structs.MIDIINCAPS();
-        var midiNumber = 0;
+        var launchpad = new LaunchpadDevice();
+        
         var writeCommand = LaunchpadWriteCommand
                 .TurnOn(16 * 1 + 1)
                 .Green(Brightness.Full)
                 .Red(Brightness.Full)
                 .ToByteArray();
 
-        for (; midiNumber < InputPort.InputCount; midiNumber++)
+        launchpad.AddGridButtonPressedHandler(MidiOut_OnGridButtonPressed);
+        launchpad.AddAutomapButtonPressedHandler(MidiOut_OnAutomapButtonPressed);
+
+        if (!launchpad.OpenOut())
         {
-            InputPort.GetDeviceInfo(midiNumber, out midiInCaps);
-            if (midiInCaps.szPname.Contains("Launchpad"))
-            {
-                break;
-            }
+            Console.WriteLine("Launchpad-Device not found");
         }
-
-        Console.WriteLine($"Device {midiNumber}:{midiInCaps.ToString()}");
-
-        midiIn.OnGridButtonPressed += MidiIn_OnGridButtonPressed;
-        midiIn.OnAutomapButtonPressed += MidiIn_OnAutomapButtonPressed;
-
-        var openReturnCode = midiIn.Open(midiNumber);
-        var startReturnCode = midiIn.Start();
-
-        Console.WriteLine($"OpenReturnCode: {openReturnCode}");
-        Console.WriteLine($"StartReturnCode: {startReturnCode}");
 
         Console.ReadLine();
 
-        midiIn.Close();
+        launchpad.CloseOut();
     }
 
-    private static void MidiIn_OnAutomapButtonPressed(object sender, LaunchpadButtonPressedEventArgs<AutomapButtons> e)
+    private static void MidiOut_OnAutomapButtonPressed(object sender, LaunchpadButtonPressedEventArgs<AutomapButtons> e)
     {
-        Console.WriteLine("OnAutomapButtonPressed:" + e.MessageType.ToString() + " " + e.Key.ToString() + " " + e.Velocity.ToString());
+        if(e.Key == AutomapButtons.Mixer && e.Velocity == InputMessageVelocity.KeyDown)
+        {
+            Console.WriteLine("Mixer-Button pressed down");
+        }
     }
 
-    private static void MidiIn_OnGridButtonPressed(object sender, LaunchpadButtonPressedEventArgs<int> e)
+    private static void MidiOut_OnGridButtonPressed(object sender, LaunchpadButtonPressedEventArgs<int> e)
     {
-        Console.WriteLine("OnGridButtonPressed:" + e.MessageType.ToString() + " " + e.Key + " " + e.Velocity.ToString());
+        throw new NotImplementedException();
     }
 }
 
