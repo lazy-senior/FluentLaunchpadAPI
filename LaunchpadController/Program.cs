@@ -1,7 +1,7 @@
 ﻿using Launchpad.Core;
-using Launchpad.Core.Commands;
 using Launchpad.Core.Enums;
 using Launchpad.Core.Enums.LED;
+using Launchpad.Core.Fluent.Commands;
 using Launchpad.Midi;
 using Launchpad.Midi.Native;
 

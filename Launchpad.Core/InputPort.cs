@@ -1,13 +1,12 @@
-﻿using Launchpad.Core;
+﻿using Launchpad.Core.Midi;
 using Launchpad.Core.Enums;
-using Launchpad.Midi.Native;
 using System.Runtime.InteropServices;
 
-namespace Launchpad.Midi
+namespace Launchpad.Core
 {
     public class InputPort
     {
-        private Native.Methods.MidiInProc midiInProc;
+        private Midi.MidiIn.MidiInProc midiInProc;
         private IntPtr handle;
 
         public delegate void OnGridButtonPressedHandler(object sender, LaunchpadButtonPressedEventArgs<int> e);
@@ -20,55 +19,55 @@ namespace Launchpad.Midi
 
         public InputPort()
         {
-            midiInProc = new Methods.MidiInProc(MidiProc);
+            midiInProc = new Midi.MidiIn.MidiInProc(MidiProc);
             handle = IntPtr.Zero;
         }
 
         public static int InputCount
         {
-            get { return Methods.midiInGetNumDevs(); }
+            get { return Midi.MidiIn.MidiInGetNumDevs(); }
         }
 
         public static void GetDeviceInfo(int id, out Structs.MIDIINCAPS midiInCaps)
         {
             midiInCaps = new Structs.MIDIINCAPS();
-            Methods.midiInGetDevCaps(id, ref midiInCaps, Marshal.SizeOf(midiInCaps));
+            Midi.MidiIn.MidiInGetDevCaps(id, ref midiInCaps, Marshal.SizeOf(midiInCaps));
         }
 
         public bool Close()
         {
-            bool result = Methods.midiInClose(handle)
-                == Methods.MMSYSERR_NOERROR;
+            bool result = Midi.MidiIn.MidiInClose(handle)
+                == Midi.MidiIn.MMSYSERR_NOERROR;
             handle = IntPtr.Zero;
             return result;
         }
 
         public bool Open(int id)
         {
-            return Methods.midiInOpen(
+            return Midi.MidiIn.MidiInOpen(
                 out handle,
                 id,
                 midiInProc,
-                IntPtr.Zero,
-                Methods.CALLBACK_FUNCTION)
-                    == Methods.MMSYSERR_NOERROR;
+                nint.Zero,
+                Midi.MidiIn.CALLBACK_FUNCTION)
+                    == Midi.MidiIn.MMSYSERR_NOERROR;
         }
 
         public bool Start()
         {
-            return Methods.midiInStart(handle)
-                == Methods.MMSYSERR_NOERROR;
+            return Midi.MidiIn.MidiInStart(handle)
+                == Midi.MidiIn.MMSYSERR_NOERROR;
         }
 
         public bool Stop()
         {
-            return Methods.midiInStop(handle)
-                == Methods.MMSYSERR_NOERROR;
+            return Midi.MidiIn.MidiInStop(handle)
+                == Midi.MidiIn.MMSYSERR_NOERROR;
         }
 
         public int OutShortMsg(int dwMsg)
         {
-            return Methods.midiOutShortMsg(handle, dwMsg);
+            return Midi.MidiIn.MidiOutShortMsg(handle, dwMsg);
         }
 
         private void MidiProc(IntPtr hMidiIn,

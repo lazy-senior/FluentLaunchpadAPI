@@ -22,22 +22,22 @@ namespace Launchpad.Core
             launchpadOutputMessageEventArgs = new();
             T outputMessageKey = default;
 
-            if (Enum.GetName(typeof(OutputMessageType), command) == null)
+            if (Enum.GetName(typeof(InputMessageType), command) == null)
             {
                 Console.WriteLine($"Command not found:{command}");
                 return false;
             }
 
-            if (Enum.GetName(typeof(OutputMessageVelocity), velocity) == null)
+            if (Enum.GetName(typeof(InputMessageVelocity), velocity) == null)
             {
                 Console.WriteLine($"Velocity not found:{velocity}");
                 return false;
             }
 
-            var outputMessageType = (OutputMessageType)command;
-            var outputMessageVelocity = (OutputMessageVelocity)velocity;
+            var outputMessageType = (InputMessageType)command;
+            var outputMessageVelocity = (InputMessageVelocity)velocity;
 
-            if (typeof(T) == typeof(int) && outputMessageType == OutputMessageType.GridButtonPress)
+            if (typeof(T) == typeof(int) && outputMessageType == InputMessageType.GridButtonPress)
             {
                 if (key < GRID_KEY_MIN || key > GRID_KEY_MAX)
                 {
@@ -45,7 +45,7 @@ namespace Launchpad.Core
                 }
                 outputMessageKey = (T)(object)key;
             }
-            else if (typeof(T) == typeof(AutomapButtons) && outputMessageType == OutputMessageType.AutomapButtonPress)
+            else if (typeof(T) == typeof(AutomapButtons) && outputMessageType == InputMessageType.AutomapButtonPress)
             {
                 if (key < AUTOMAP_KEY_MIN || key > AUTOMAP_KEY_MAX)
                 {
