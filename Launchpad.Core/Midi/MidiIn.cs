@@ -23,10 +23,10 @@ namespace Launchpad.Core.Midi
             int dwParam2);
 
         [DllImport("winmm.dll")]
-        internal static extern int midiInGetNumDevs();
+        internal static extern int MidiInGetNumDevs();
 
         [DllImport("winmm.dll")]
-        internal static extern int midiInGetOutDevs();
+        internal static extern int MidiInGetOutDevs();
 
         [DllImport("winmm.dll")]
         internal static extern int midiInGetDevCaps(
@@ -35,11 +35,11 @@ namespace Launchpad.Core.Midi
             int cbmic);                     //  UINT         cbmic
 
         [DllImport("winmm.dll")]
-        internal static extern int midiInClose(
+        internal static extern int MidiInClose(
             IntPtr hMidiIn);
 
         [DllImport("winmm.dll")]
-        internal static extern int midiInOpen(
+        internal static extern int MidiInOpen(
             out IntPtr lphMidiIn,
             int uDeviceID,
             MidiInProc dwCallback,
@@ -51,7 +51,7 @@ namespace Launchpad.Core.Midi
             IntPtr hMidiIn);
 
         [DllImport("winmm.dll")]
-        internal static extern int midiInStop(
+        internal static extern int MidiInStop(
             IntPtr hMidiIn);
 
     }

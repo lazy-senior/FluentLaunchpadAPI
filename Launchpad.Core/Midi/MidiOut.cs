@@ -22,7 +22,6 @@ namespace Launchpad.Core.Midi
             int dwParam2);
 
         [DllImport("winmm.dll")]
-        internal static extern int midiOutClose(
             IntPtr hmo);
 
         [DllImport("winmm.dll")]
