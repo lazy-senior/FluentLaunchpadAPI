@@ -4,8 +4,8 @@ namespace Launchpad.Core
 {
     public class LaunchpadButtonPressedEventArgs<T> : EventArgs
     {
-        public OutputMessageType MessageType { get; set; }
+        public InputMessageType MessageType { get; set; }
         public T? Key { get; set; }
-        public OutputMessageVelocity Velocity { get; set; }
+        public InputMessageVelocity Velocity { get; set; }
     }
 }

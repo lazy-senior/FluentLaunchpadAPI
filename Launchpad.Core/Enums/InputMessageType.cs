@@ -2,8 +2,7 @@
 {
     public enum InputMessageType
     {
-        NoteOff = 0x80,
-        NoteOn = 0x90,
-        ControllerChange = 0xB0
+        GridButtonPress = 0x90,
+        AutomapButtonPress = 0xB0
     }
 }
